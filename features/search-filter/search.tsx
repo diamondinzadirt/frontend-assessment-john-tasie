@@ -1,25 +1,55 @@
 'use client';
 
-import { useRouter, useSearchParams } from 'next/navigation';
-import { useState, useEffect } from 'react';
+import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 export function Search() {
+  const pathname = usePathname();
   const router = useRouter();
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get('q') || '');
+  const currentQuery = searchParams.get('q') ?? '';
+  const [query, setQuery] = useState(currentQuery);
 
-  const handleSubmit = (e: React.FormEvent<HTMLFormElement>) => {
+  useEffect(() => {
+    setQuery(currentQuery);
+  }, [currentQuery]);
+
+  useEffect(() => {
+    if (query === currentQuery) return;
+
+    const timeoutId = window.setTimeout(() => {
+      const params = new URLSearchParams(searchParams);
+
+      if (query.trim()) {
+        params.set('q', query.trim());
+        params.set('page', '1');
+      } else {
+        params.delete('q');
+        params.delete('page');
+      }
+
+      const nextUrl = params.toString() ? `${pathname}?${params}` : pathname;
+      router.replace(nextUrl, { scroll: false });
+    }, 300);
+
+    return () => window.clearTimeout(timeoutId);
+  }, [currentQuery, pathname, query, router, searchParams]);
+
+  function handleSubmit(e: React.FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const params = new URLSearchParams(searchParams);
-    if (query) {
-      params.set('q', query);
+
+    if (query.trim()) {
+      params.set('q', query.trim());
       params.set('page', '1');
     } else {
       params.delete('q');
       params.delete('page');
     }
-    router.push(`?${params.toString()}`);
-  };
+
+    const nextUrl = params.toString() ? `${pathname}?${params}` : pathname;
+    router.replace(nextUrl, { scroll: false });
+  }
 
   return (
     <form onSubmit={handleSubmit} className="mb-6">
@@ -33,6 +63,7 @@ export function Search() {
         />
         <button
           type="submit"
+          aria-label="Search products"
           className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 text-gray-500 hover:text-blue-600"
         >
           <svg

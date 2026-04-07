@@ -5,10 +5,9 @@ export const MAX_VISIBLE_PAGES = 5;
 // Sorting
 export const SORT_OPTIONS = [
   { value: 'featured', label: 'Featured' },
-  { value: 'price-asc', label: 'Price: Low to High' },
-  { value: 'price-desc', label: 'Price: High to Low' },
-  { value: 'rating', label: 'Highest Rated' },
-  { value: 'newest', label: 'Newest' },
+  { value: 'price-low', label: 'Price: Low to High' },
+  { value: 'price-high', label: 'Price: High to Low' },
+  { value: 'rating', label: 'Highest Rating' },
 ] as const;
 
 // Stock status

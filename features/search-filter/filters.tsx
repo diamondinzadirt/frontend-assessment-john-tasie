@@ -1,13 +1,22 @@
 'use client';
 
 import { useRouter, useSearchParams } from 'next/navigation';
-import { CATEGORIES } from '@/lib/mock-data';
+import { SORT_OPTIONS } from '@/lib/constants';
+import type { CategoryType } from '@/types';
 
 interface FiltersProps {
+  categories: CategoryType[];
   onFilterChange?: () => void;
 }
 
-export function Filters({ onFilterChange }: FiltersProps) {
+function getCategoryLabel(category: string): string {
+  return category
+    .split('-')
+    .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+    .join(' ');
+}
+
+export function Filters({ categories, onFilterChange }: FiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get('category') || '';
@@ -54,7 +63,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
           >
             All Categories
           </button>
-          {CATEGORIES.map((category) => (
+          {categories.map((category) => (
             <button
               key={category}
               onClick={() => handleCategoryChange(category)}
@@ -64,7 +73,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
                   : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
-              {category}
+              {getCategoryLabel(category)}
             </button>
           ))}
         </div>
@@ -74,12 +83,7 @@ export function Filters({ onFilterChange }: FiltersProps) {
       <div className="border-t border-gray-200 pt-6">
         <h3 className="font-semibold text-gray-900 mb-3">Sort By</h3>
         <div className="space-y-2">
-          {[
-            { value: 'featured', label: 'Featured' },
-            { value: 'price-low', label: 'Price: Low to High' },
-            { value: 'price-high', label: 'Price: High to Low' },
-            { value: 'rating', label: 'Highest Rating' },
-          ].map((option) => (
+          {SORT_OPTIONS.map((option) => (
             <button
               key={option.value}
               onClick={() => handleSortChange(option.value)}

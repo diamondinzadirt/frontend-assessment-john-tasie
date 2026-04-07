@@ -1,7 +1,7 @@
 'use client';
 
 import Link from 'next/link';
-import { Product } from '@/lib/types';
+import type { Product } from '@/types';
 import { RatingDisplay } from './rating-display';
 import { StockBadge } from './stock-badge';
 import { ProductImageGallery } from './product-image-gallery';
@@ -33,14 +33,14 @@ export function ProductCard({ product }: ProductCardProps) {
 
           {/* Brand */}
           <p className="text-xs text-gray-500 mb-3">
-            By {product.brand}
+            By {product.brand ?? 'Unknown Brand'}
           </p>
 
           {/* Rating */}
           <div className="mb-3">
             <RatingDisplay
               rating={product.rating}
-              reviewCount={product.reviewCount}
+              reviewCount={product.reviews.length}
               size="sm"
               showCount={false}
             />
