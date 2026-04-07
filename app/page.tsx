@@ -19,7 +19,15 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   const rawSearchParams = await searchParams;
-  const categories = await getProductCategories();
+  let categoryLoadError = false;
+  let categories: Awaited<ReturnType<typeof getProductCategories>> = [];
+
+  try {
+    categories = await getProductCategories();
+  } catch {
+    categoryLoadError = true;
+  }
+
   const { productParams, urlParams } =
     normalizeListingSearchParams(rawSearchParams);
 
@@ -49,7 +57,10 @@ export default async function Page({ searchParams }: PageProps) {
           <aside className="lg:col-span-1">
             <div className="sticky top-8">
               <Suspense fallback={<FiltersSkeleton />}>
-                <Filters categories={categories} />
+                <Filters
+                  categories={categories}
+                  categoryLoadError={categoryLoadError}
+                />
               </Suspense>
             </div>
           </aside>

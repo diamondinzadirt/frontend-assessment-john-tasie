@@ -68,8 +68,13 @@ States:
 
 - `app/loading.tsx` for route-level loading UI.
 - `app/error.tsx` for friendly error recovery.
+- `app/products/[id]/error.tsx` for detail-page error recovery.
 - `app/products/[id]/loading.tsx` for detail-page loading UI.
 - `app/products/[id]/not-found.tsx` for invalid product routes.
+- Global navigation loading indicator for internal page transitions.
+- Inline listing error state if product data cannot be loaded.
+- Filter UI fallback if category data cannot be loaded.
+- Related-products fallback so product detail remains usable if related products fail.
 
 Testing:
 

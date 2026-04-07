@@ -1,4 +1,5 @@
 import { EmptyState } from '@/components/empty-state';
+import { ErrorState } from '@/components/error-state';
 import { ProductCard } from '@/components/product-card';
 import { ITEMS_PER_PAGE } from '@/lib/constants';
 import { getProducts } from '@/lib/products';
@@ -14,7 +15,21 @@ export async function ProductListing({
   params,
   searchParams,
 }: ProductListingProps) {
-  const data = await getProducts(params);
+  let data;
+
+  try {
+    data = await getProducts(params);
+  } catch {
+    return (
+      <ErrorState
+        title="Products could not be loaded"
+        message="The product API is temporarily unavailable. Please refresh or try again in a moment."
+        actionHref="/"
+        actionLabel="Reset listing"
+      />
+    );
+  }
+
   const currentPage = params.page ?? 1;
   const totalPages = Math.max(1, Math.ceil(data.total / ITEMS_PER_PAGE));
 

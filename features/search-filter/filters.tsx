@@ -6,6 +6,7 @@ import type { CategoryType } from '@/types';
 
 interface FiltersProps {
   categories: CategoryType[];
+  categoryLoadError?: boolean;
   onFilterChange?: () => void;
 }
 
@@ -16,7 +17,11 @@ function getCategoryLabel(category: string): string {
     .join(' ');
 }
 
-export function Filters({ categories, onFilterChange }: FiltersProps) {
+export function Filters({
+  categories,
+  categoryLoadError = false,
+  onFilterChange,
+}: FiltersProps) {
   const router = useRouter();
   const searchParams = useSearchParams();
   const selectedCategory = searchParams.get('category') || '';
@@ -52,6 +57,11 @@ export function Filters({ categories, onFilterChange }: FiltersProps) {
       {/* Category Filter */}
       <div>
         <h3 className="font-semibold text-gray-900 mb-3">Category</h3>
+        {categoryLoadError && (
+          <p className="mb-3 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+            Categories are temporarily unavailable. Search and sorting still work.
+          </p>
+        )}
         <div className="space-y-2">
           <button
             onClick={() => handleCategoryChange('')}

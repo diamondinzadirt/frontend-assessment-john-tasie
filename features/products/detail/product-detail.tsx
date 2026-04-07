@@ -1,5 +1,6 @@
 import Link from 'next/link';
 import { Breadcrumb } from '@/components/breadcrumb';
+import { ErrorState } from '@/components/error-state';
 import { ProductCard } from '@/components/product-card';
 import { ProductImageGallery } from '@/components/product-image-gallery';
 import { RatingDisplay } from '@/components/rating-display';
@@ -13,7 +14,14 @@ function getCategoryHref(category: string): string {
 }
 
 export async function ProductDetail({ product }: { product: Product }) {
-  const relatedProducts = await getRelatedProducts(product);
+  let relatedProducts: Product[] = [];
+  let relatedProductsError = false;
+
+  try {
+    relatedProducts = await getRelatedProducts(product);
+  } catch {
+    relatedProductsError = true;
+  }
 
   return (
     <div>
@@ -123,7 +131,16 @@ export async function ProductDetail({ product }: { product: Product }) {
       </div>
 
       {/* Related Products */}
-      {relatedProducts.length > 0 && (
+      {relatedProductsError && (
+        <ErrorState
+          title="Related products could not be loaded"
+          message="The main product is available, but related products are temporarily unavailable."
+          actionHref="/"
+          actionLabel="Browse all products"
+        />
+      )}
+
+      {!relatedProductsError && relatedProducts.length > 0 && (
         <div>
           <h2 className="text-2xl font-bold text-gray-900 mb-6">
             Related Products

@@ -1,4 +1,6 @@
 import type { Metadata } from 'next'
+import { Suspense } from 'react'
+import { NavigationLoadingIndicator } from '@/components/navigation-loading-indicator'
 import './globals.css'
 
 export const metadata: Metadata = {
@@ -32,6 +34,9 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className="font-sans antialiased">
+        <Suspense fallback={null}>
+          <NavigationLoadingIndicator />
+        </Suspense>
         {children}
       </body>
     </html>
