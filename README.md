@@ -18,12 +18,13 @@ Implemented:
 - Route-level loading and error UI.
 - Dedicated empty state for no listing results.
 - Two meaningful component tests with Vitest and React Testing Library.
+- Product images rendered with `next/image`.
+- Explicit fetch cache strategy for product and category data.
 - Shared TypeScript product types.
 - Feature-scoped structure for listing, detail, and search/filter behavior.
 
 Planned next:
 
-- Add performance pass: use `next/image`, review image sizing, and document caching choices.
 - Add `.env.example` if environment variables become necessary. Currently none are required.
 - Run Lighthouse or axe accessibility audit and document results if pursuing accessibility bonus.
 - Deploy final commit to Cloudflare Workers or Vercel and add the live URL.
@@ -163,31 +164,34 @@ Tests:
 
 - Kept route-specific client code isolated to search/filter controls.
 - Listing and detail data are fetched from the server layer.
+- Product images use `next/image` with explicit width, height, responsive `sizes`, and graceful fallback behavior.
+- Above-the-fold listing images and the primary detail image are marked with `priority`.
+- DummyJSON product/detail requests use `revalidate: 300`.
+- DummyJSON category-list requests use `revalidate: 3600`.
+- Next image optimization is enabled for `cdn.dummyjson.com`.
+- Production builds run TypeScript validation.
 
 Performance work still pending:
 
-- Replace raw product image rendering with `next/image`.
-- Add explicit image dimensions and review fallback behavior.
-- Decide and document final cache strategy for DummyJSON requests.
 - Run Lighthouse/PageSpeed after deployment.
 
 ## Trade-offs And Known Limitations
 
 - DummyJSON does not support combining category and search server-side, so combined search+category filtering is handled in `lib/products.ts` after fetching the selected category page.
-- Request-time fetching currently uses `cache: 'no-store'` to avoid build-time API dependency while the project is still under active development. This should be revisited during the performance/cache pass.
+- Combined category+search filtering fetches up to 100 products for the selected category and filters locally because DummyJSON does not expose a combined category search endpoint.
 - README will need final deployment details once the app is deployed.
 
 ## Next Work Plan
 
-Stage 1: Verification pass.
+Stage 1: Verification pass. Done.
 
 Goal: confirm that the current implementation behaves exactly as expected before adding more code.
 
-- Check search URL behavior, for example `/?q=phone`.
-- Check category filter URL behavior, for example `/?category=smartphones`.
-- Check pagination preserves query/filter state.
-- Check detail route behavior for `/products/1`.
-- Check loading, empty, not-found, and error behavior.
+- Verified search URL behavior, for example `/?q=phone`.
+- Verified category filter URL behavior, for example `/?category=smartphones`.
+- Verified pagination route behavior with query state.
+- Verified detail route behavior for `/products/1`.
+- Verified not-found route behavior for an invalid product.
 
 Stage 2: Tests. Done.
 
@@ -196,14 +200,14 @@ Goal: satisfy the assessment testing requirement without over-testing.
 - Added Vitest with React Testing Library.
 - Added tests for `StockBadge` and `RatingDisplay`.
 
-Stage 3: Performance pass.
+Stage 3: Performance pass. Done.
 
 Goal: improve Lighthouse readiness and document optimization choices.
 
-- Replace `<img>` usage in product images with `next/image`.
-- Add explicit image dimensions/sizes.
-- Review fetch cache strategy and choose between `no-store`, `revalidate`, or `force-cache` where appropriate.
-- Keep changes readable and maintainable.
+- Replaced raw product images with `next/image`.
+- Added explicit image dimensions and responsive sizes.
+- Enabled remote image optimization for DummyJSON images.
+- Applied `revalidate` cache settings for product and category fetches.
 
 Stage 4: README finalization.
 

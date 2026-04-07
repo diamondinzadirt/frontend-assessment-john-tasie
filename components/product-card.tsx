@@ -8,15 +8,20 @@ import { ProductImageGallery } from './product-image-gallery';
 
 interface ProductCardProps {
   product: Product;
+  priority?: boolean;
 }
 
-export function ProductCard({ product }: ProductCardProps) {
+export function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
     <Link href={`/products/${product.id}`}>
       <div className="group h-full border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200 flex flex-col bg-white">
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden bg-gray-100 group-hover:opacity-95 transition-opacity duration-200">
-          <ProductImageGallery thumbnail={product.thumbnail} title={product.title} />
+          <ProductImageGallery
+            thumbnail={product.thumbnail}
+            title={product.title}
+            priority={priority}
+          />
         </div>
 
         {/* Content Container */}

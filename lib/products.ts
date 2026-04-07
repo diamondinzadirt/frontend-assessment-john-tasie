@@ -7,7 +7,8 @@ import type {
 } from '@/types';
 
 const API_BASE_URL = 'https://dummyjson.com';
-const SERVER_FETCH_OPTIONS = { cache: 'no-store' } as const;
+const PRODUCT_FETCH_OPTIONS = { next: { revalidate: 300 } } as const;
+const CATEGORY_FETCH_OPTIONS = { next: { revalidate: 3600 } } as const;
 
 function toPositiveInteger(value: number | undefined, fallback: number): number {
   if (!value || Number.isNaN(value) || value < 1) return fallback;
@@ -75,7 +76,7 @@ export async function getProducts(
       `${API_BASE_URL}/products/category/${encodeURIComponent(
         params.category
       )}?limit=100&skip=0`,
-      SERVER_FETCH_OPTIONS
+      PRODUCT_FETCH_OPTIONS
     );
 
     if (!response.ok) {
@@ -96,7 +97,7 @@ export async function getProducts(
     };
   }
 
-  const response = await fetch(buildProductsUrl(params), SERVER_FETCH_OPTIONS);
+  const response = await fetch(buildProductsUrl(params), PRODUCT_FETCH_OPTIONS);
 
   if (!response.ok) {
     throw new Error('Failed to fetch products');
@@ -112,7 +113,7 @@ export async function getProducts(
 
 export async function getProductById(id: string): Promise<Product | null> {
   const response = await fetch(`${API_BASE_URL}/products/${encodeURIComponent(id)}`, {
-    ...SERVER_FETCH_OPTIONS,
+    ...PRODUCT_FETCH_OPTIONS,
   });
 
   if (response.status === 404) {
@@ -129,7 +130,7 @@ export async function getProductById(id: string): Promise<Product | null> {
 export async function getProductCategories(): Promise<CategoryType[]> {
   const response = await fetch(
     `${API_BASE_URL}/products/category-list`,
-    SERVER_FETCH_OPTIONS
+    CATEGORY_FETCH_OPTIONS
   );
 
   if (!response.ok) {

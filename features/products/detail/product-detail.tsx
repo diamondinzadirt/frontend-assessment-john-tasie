@@ -30,7 +30,12 @@ export async function ProductDetail({ product }: { product: Product }) {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-8 md:gap-12 mb-12">
         {/* Image Gallery */}
         <div>
-          <ProductImageGallery thumbnail={product.thumbnail} title={product.title} />
+          <ProductImageGallery
+            thumbnail={product.thumbnail}
+            title={product.title}
+            priority
+            sizes="(min-width: 768px) 50vw, 100vw"
+          />
         </div>
 
         {/* Product Info */}
