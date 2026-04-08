@@ -97,12 +97,14 @@ app/
   products/[id]/
     page.tsx
     loading.tsx
+    error.tsx
     not-found.tsx
 
 components/
   breadcrumb.tsx
   empty-state.tsx
   error-state.tsx
+  navigation-loading-indicator.tsx
   product-card.tsx
   product-detail-skeleton.tsx
   product-image-gallery.tsx
@@ -114,11 +116,14 @@ features/
   products/
     detail/
     listing/
+      pagination-utils.test.ts
+      search-params.test.ts
   search-filter/
 
 lib/
   constants.ts
   products.ts
+  products.test.ts
 
 types/
   index.ts
