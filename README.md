@@ -223,8 +223,4 @@ Headers to check:
 - `x-cache-status` currently signals cache eligibility at the app layer; it is useful for verification, but it is not a substitute for Cloudflare's own `cf-cache-status` response header.
 - I did not add extra state libraries because the app does not need them; URL state plus React built-ins were sufficient.
 
-## What I Would Improve With 2 More Hours
 
-- tighten Cloudflare edge-cache observability further so `HIT`/`MISS` can be demonstrated more explicitly at the deployment boundary
-- add a small verified deployment section with screenshots or repeated curl checks for caching behavior
-- expand tests around detail-page rendering and error recovery
