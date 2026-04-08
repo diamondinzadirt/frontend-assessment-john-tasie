@@ -37,7 +37,7 @@ export default async function Page({ searchParams }: PageProps) {
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
           <h1 className="text-3xl font-bold text-gray-900 mb-2">
-            Product Explorer
+            Checkit Product Explorer
           </h1>
           <p className="text-gray-600">
             Browse our collection of premium products
@@ -52,9 +52,22 @@ export default async function Page({ searchParams }: PageProps) {
           <Search />
         </Suspense>
 
+        <div className="mb-6 lg:hidden">
+          <Suspense fallback={<FiltersSkeleton variant="compact" />}>
+            <Filters
+              categories={categories}
+              categoryLoadError={categoryLoadError}
+              variant="compact"
+            />
+          </Suspense>
+        </div>
+
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar - Filters */}
-          <aside className="lg:col-span-1" aria-label="Product filters">
+          <aside
+            className="hidden lg:block lg:col-span-1"
+            aria-label="Product filters"
+          >
             <div className="sticky top-8">
               <Suspense fallback={<FiltersSkeleton />}>
                 <Filters

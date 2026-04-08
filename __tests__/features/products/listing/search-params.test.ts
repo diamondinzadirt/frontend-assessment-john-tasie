@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 import { ITEMS_PER_PAGE } from '@/lib/constants';
-import { normalizeListingSearchParams } from './search-params';
+import { normalizeListingSearchParams } from '@/features/products/listing/search-params';
 
 describe('normalizeListingSearchParams', () => {
   it('trims search input and defaults optional params for shareable URLs', () => {

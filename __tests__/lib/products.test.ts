@@ -4,7 +4,7 @@ import {
   getProductCategories,
   getProducts,
   ProductApiError,
-} from './products';
+} from '@/lib/products';
 import type { Product, ProductsResponse } from '@/types';
 
 function makeProduct(overrides: Partial<Product> = {}): Product {

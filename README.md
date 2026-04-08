@@ -1,8 +1,8 @@
-# Product Explorer
+# Checkit Product Explorer
 
 Content Explorer take-home project for the Checkit Frontend Engineer assessment.
 
-Product Explorer is a server-rendered product catalog built with the Next.js App Router, TypeScript, and Tailwind CSS. It uses the DummyJSON Products API to provide searchable, filterable, paginated product browsing and server-rendered product detail pages.
+Checkit Product Explorer is a server-rendered product catalog built with the Next.js App Router, TypeScript, and Tailwind CSS. It uses the DummyJSON Products API to provide searchable, filterable, paginated product browsing and server-rendered product detail pages.
 
 ## Setup
 

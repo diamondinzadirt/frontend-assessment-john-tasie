@@ -1,5 +1,5 @@
 import { describe, expect, it } from 'vitest';
-import { getVisiblePages } from './pagination-utils';
+import { getVisiblePages } from '@/features/products/listing/pagination-utils';
 
 describe('getVisiblePages', () => {
   it('returns all pages when the total fits in the visible window', () => {
