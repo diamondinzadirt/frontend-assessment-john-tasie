@@ -50,6 +50,7 @@ Listing page:
 
 - Server-rendered App Router page.
 - Product data fetched through the server-side API layer.
+- Displays 20 products per page by default.
 - Responsive product grid with mobile, tablet, and desktop layouts.
 - Product cards include title, image with fallback, price, rating, category, brand, and stock status.
 - URL-driven search, category filter, sorting, and pagination.
@@ -135,6 +136,7 @@ Architecture decisions:
 - Next image optimization is enabled for `cdn.dummyjson.com`.
 - Product and product-detail requests use `revalidate: 300`.
 - Category-list requests use `revalidate: 3600`.
+- Static Next assets are configured with `Cache-Control: public, max-age=31536000, immutable`.
 - Route-specific client code is isolated to search/filter controls.
 - Production builds run TypeScript validation.
 
@@ -143,7 +145,7 @@ Architecture decisions:
 - DummyJSON does not expose a combined category+search endpoint. When both are active, the app fetches products for the selected category and applies the search filter in `lib/products.ts`.
 - Combined category+search filtering currently fetches up to 100 products for the selected category before local filtering.
 - Lighthouse/PageSpeed results are not documented yet because the app has not been deployed.
-- No environment variables are currently required, so `.env.example` is not needed at this stage.
+- No environment variables are currently required; `.env.example` is included to make that explicit.
 
 ## Verification
 

@@ -3,7 +3,7 @@ import { ProductSkeleton } from '@/components/product-skeleton';
 export function ProductListingSkeleton() {
   return (
     <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-4 md:gap-6">
-      {Array(12)
+      {Array(20)
         .fill(0)
         .map((_, i) => (
           <ProductSkeleton key={i} />
