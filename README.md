@@ -11,7 +11,7 @@ Cloudflare Workers deployment:
 ## Setup
 
 ```bash
-git clone <your-repository-url>
+git clone (https://github.com/diamondinzadirt/frontend-assessment-john-tasie.git)
 cd frontend-assessment-john-tasie
 npm install
 npm run dev
