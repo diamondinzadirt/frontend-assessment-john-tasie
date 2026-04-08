@@ -1,5 +1,3 @@
-'use client';
-
 export function ProductDetailSkeleton() {
   return (
     <div className="space-y-8">

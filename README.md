@@ -53,6 +53,7 @@ Listing page:
 - Displays 20 products per page by default.
 - Responsive product grid with mobile, tablet, and desktop layouts.
 - Product cards include title, image with fallback, price, rating, category, brand, and stock status.
+- Product image containers include a skeleton-style placeholder while images load.
 - URL-driven search, category filter, sorting, and pagination.
 - Empty-state UI for searches or filters with no results.
 
@@ -139,22 +140,53 @@ Architecture decisions:
 - `lib/products.ts` validates API response shapes and throws a typed `ProductApiError` when network, status, JSON, or schema issues occur.
 - `types/` contains reusable TypeScript shapes for API data.
 
-## Performance Decisions
+## Performance Optimizations
 
-- Product images use `next/image` with explicit width, height, responsive `sizes`, and fallback behavior.
-- Above-the-fold listing images and the primary detail image are marked with `priority`.
-- Next image optimization is enabled for `cdn.dummyjson.com`.
-- Product and product-detail requests use `revalidate: 300`.
-- Category-list requests use `revalidate: 3600`.
+1. Image optimization with `next/image`
+
+- All product imagery is rendered through `next/image`.
+- Product images define explicit `width` and `height` values to reserve layout space and reduce CLS.
+- Responsive `sizes` values are applied so smaller screens avoid downloading unnecessarily large images.
+- Above-the-fold listing cards and the main detail image use `priority` to improve LCP.
+- Product image containers keep a fixed aspect ratio and show a lightweight skeleton placeholder while the image loads.
+
+2. Fetch caching strategy
+
+- Product listing and product detail requests use `next: { revalidate: 300 }`.
+- Category-list requests use a longer `revalidate: 3600` interval because that data changes less frequently.
+- The app avoids `cache: 'no-store'` so repeat requests can benefit from Next.js caching and reduce render-time network cost.
 - Static Next assets are configured with `Cache-Control: public, max-age=31536000, immutable`.
-- Route-specific client code is isolated to search/filter controls.
-- The related-products detail section uses React `Suspense` for streaming server-rendered UI below the primary product content.
-- Production builds run TypeScript validation.
+
+3. Font optimization with `next/font`
+
+- The root layout uses `next/font/google` with `Inter`.
+- Font loading uses `display: 'swap'` through Next.js font optimization.
+- This avoids external render-blocking font requests and helps reduce layout shift on first paint.
+
+4. Reduced client-side JavaScript
+
+- The main listing page remains a server component.
+- Client components are limited to interactive areas such as search/filter controls, image loading state, and route-transition feedback.
+- Presentational components that do not need client hooks were moved back to server-compatible components to keep the client bundle smaller.
+
+5. Layout stability improvements
+
+- Listing and detail image containers use fixed aspect ratios.
+- Skeleton loaders are sized to match their final content regions.
+- Product cards and detail sections reserve space before content resolves, which helps keep CLS low.
 
 ## Bonus Work
 
 - React streaming with `Suspense` is implemented on the product detail page for related products.
 - Accessibility and Lighthouse audit results are still pending until the app is deployed.
+
+## Accessibility
+
+- Added a skip link for keyboard users to jump directly to the main content.
+- Search, filters, pagination, and breadcrumbs use clearer labels and navigation semantics.
+- Interactive controls include visible `focus-visible` states for keyboard navigation.
+- Filter and sort controls expose state with `aria-pressed`, and the active breadcrumb item uses `aria-current="page"`.
+- Empty and error states use clearer status/alert semantics.
 
 ## Trade-offs And Known Limitations
 

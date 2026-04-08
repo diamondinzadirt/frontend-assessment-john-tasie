@@ -32,7 +32,7 @@ export default async function Page({ searchParams }: PageProps) {
     normalizeListingSearchParams(rawSearchParams);
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main id="main-content" className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
@@ -54,7 +54,7 @@ export default async function Page({ searchParams }: PageProps) {
 
         <div className="grid grid-cols-1 lg:grid-cols-4 gap-8">
           {/* Sidebar - Filters */}
-          <aside className="lg:col-span-1">
+          <aside className="lg:col-span-1" aria-label="Product filters">
             <div className="sticky top-8">
               <Suspense fallback={<FiltersSkeleton />}>
                 <Filters
@@ -66,7 +66,14 @@ export default async function Page({ searchParams }: PageProps) {
           </aside>
 
           {/* Main - Products Grid */}
-          <section className="lg:col-span-3">
+          <section
+            id="product-results"
+            className="lg:col-span-3"
+            aria-labelledby="products-heading"
+          >
+            <h2 id="products-heading" className="sr-only">
+              Product results
+            </h2>
             <Suspense fallback={<ProductListingSkeleton />}>
               <ProductListing
                 params={productParams}

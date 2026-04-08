@@ -40,11 +40,14 @@ export default async function Page({ params }: ProductPageProps) {
   }
 
   return (
-    <main className="min-h-screen bg-gray-50">
+    <main id="main-content" className="min-h-screen bg-gray-50">
       {/* Header */}
       <div className="bg-white border-b border-gray-200">
         <div className="max-w-6xl mx-auto px-4 sm:px-6 lg:px-8 py-6">
-          <Link href="/" className="text-blue-600 hover:underline text-sm">
+          <Link
+            href="/"
+            className="text-sm text-blue-600 hover:underline focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
+          >
             ← Back to Products
           </Link>
         </div>

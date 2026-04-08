@@ -1,5 +1,3 @@
-'use client';
-
 import Link from 'next/link';
 import type { Product } from '@/types';
 import { RatingDisplay } from './rating-display';
@@ -13,7 +11,10 @@ interface ProductCardProps {
 
 export function ProductCard({ product, priority = false }: ProductCardProps) {
   return (
-    <Link href={`/products/${product.id}`}>
+    <Link
+      href={`/products/${product.id}`}
+      className="rounded-lg focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+    >
       <div className="group h-full border border-gray-200 rounded-lg overflow-hidden hover:shadow-lg transition-shadow duration-200 flex flex-col bg-white">
         {/* Image Container */}
         <div className="relative aspect-square overflow-hidden bg-gray-100 group-hover:opacity-95 transition-opacity duration-200">

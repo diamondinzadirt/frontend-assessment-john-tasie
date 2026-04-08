@@ -52,19 +52,24 @@ export function Search() {
   }
 
   return (
-    <form onSubmit={handleSubmit} className="mb-6">
+    <form onSubmit={handleSubmit} className="mb-6" role="search" aria-label="Search products">
       <div className="relative">
+        <label htmlFor="product-search" className="sr-only">
+          Search products
+        </label>
         <input
+          id="product-search"
           type="text"
           placeholder="Search products..."
           value={query}
           onChange={(e) => setQuery(e.target.value)}
-          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-50"
+          aria-controls="product-results"
+          className="w-full px-4 py-2.5 border border-gray-300 rounded-lg focus:outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-100"
         />
         <button
           type="submit"
           aria-label="Search products"
-          className="absolute right-2 top-1/2 -translate-y-1/2 px-4 py-1.5 text-gray-500 hover:text-blue-600"
+          className="absolute right-2 top-1/2 -translate-y-1/2 rounded-md px-4 py-1.5 text-gray-500 hover:text-blue-600 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500"
         >
           <svg
             className="w-5 h-5"

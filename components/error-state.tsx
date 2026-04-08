@@ -14,7 +14,10 @@ export function ErrorState({
   actionLabel = 'Back to Products',
 }: ErrorStateProps) {
   return (
-    <div className="text-center py-12 bg-white border border-gray-200 rounded-lg px-6">
+    <div
+      role="alert"
+      className="rounded-lg border border-gray-200 bg-white px-6 py-12 text-center"
+    >
       <div className="mb-4 text-5xl" aria-hidden="true">
         ⚠️
       </div>
@@ -24,7 +27,10 @@ export function ErrorState({
       <p className="text-gray-600 mb-6">
         {message}
       </p>
-      <Link href={actionHref} className="inline-block px-6 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 transition-colors">
+      <Link
+        href={actionHref}
+        className="inline-block rounded-lg bg-blue-600 px-6 py-2 text-white transition-colors hover:bg-blue-700 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 focus-visible:ring-offset-2"
+      >
         {actionLabel}
       </Link>
     </div>

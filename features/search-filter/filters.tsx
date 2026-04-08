@@ -55,19 +55,26 @@ export function Filters({
   return (
     <div className="bg-white border border-gray-200 rounded-lg p-6 space-y-6">
       {/* Category Filter */}
-      <div>
-        <h3 className="font-semibold text-gray-900 mb-3">Category</h3>
+      <section aria-labelledby="category-filter-heading">
+        <h2 id="category-filter-heading" className="font-semibold text-gray-900 mb-3">
+          Category
+        </h2>
         {categoryLoadError && (
-          <p className="mb-3 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800">
+          <p
+            role="status"
+            className="mb-3 rounded-lg bg-amber-50 px-3 py-2 text-sm text-amber-800"
+          >
             Categories are temporarily unavailable. Search and sorting still work.
           </p>
         )}
-        <div className="space-y-2">
+        <div className="space-y-2" role="group" aria-labelledby="category-filter-heading">
           <button
+            type="button"
             onClick={() => handleCategoryChange('')}
-            className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
+            aria-pressed={!selectedCategory}
+            className={`block w-full text-left px-3 py-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
               !selectedCategory
-                ? 'bg-blue-50 text-blue-600 font-medium'
+                ? 'bg-blue-50 text-blue-700 font-medium'
                 : 'text-gray-700 hover:bg-gray-50'
             }`}
           >
@@ -76,10 +83,12 @@ export function Filters({
           {categories.map((category) => (
             <button
               key={category}
+              type="button"
               onClick={() => handleCategoryChange(category)}
-              className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
+              aria-pressed={selectedCategory === category}
+              className={`block w-full text-left px-3 py-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 selectedCategory === category
-                  ? 'bg-blue-50 text-blue-600 font-medium'
+                  ? 'bg-blue-50 text-blue-700 font-medium'
                   : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -87,19 +96,23 @@ export function Filters({
             </button>
           ))}
         </div>
-      </div>
+      </section>
 
       {/* Sort Filter */}
-      <div className="border-t border-gray-200 pt-6">
-        <h3 className="font-semibold text-gray-900 mb-3">Sort By</h3>
-        <div className="space-y-2">
+      <section className="border-t border-gray-200 pt-6" aria-labelledby="sort-filter-heading">
+        <h2 id="sort-filter-heading" className="font-semibold text-gray-900 mb-3">
+          Sort By
+        </h2>
+        <div className="space-y-2" role="group" aria-labelledby="sort-filter-heading">
           {SORT_OPTIONS.map((option) => (
             <button
               key={option.value}
+              type="button"
               onClick={() => handleSortChange(option.value)}
-              className={`block w-full text-left px-3 py-2 rounded-lg transition-colors ${
+              aria-pressed={sortBy === option.value}
+              className={`block w-full text-left px-3 py-2 rounded-lg transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 sortBy === option.value
-                  ? 'bg-blue-50 text-blue-600 font-medium'
+                  ? 'bg-blue-50 text-blue-700 font-medium'
                   : 'text-gray-700 hover:bg-gray-50'
               }`}
             >
@@ -107,7 +120,7 @@ export function Filters({
             </button>
           ))}
         </div>
-      </div>
+      </section>
     </div>
   );
 }

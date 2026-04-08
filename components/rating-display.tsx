@@ -1,5 +1,3 @@
-'use client';
-
 import { MAX_RATING } from '@/lib/constants';
 
 interface RatingDisplayProps {

@@ -29,12 +29,15 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
   const pages = getVisiblePages(currentPage, totalPages);
 
   return (
-    <div className="flex items-center justify-center gap-2 mt-8">
+    <nav
+      className="mt-8 flex flex-wrap items-center justify-center gap-2"
+      aria-label="Pagination"
+    >
       {/* Previous Button */}
       <Link
         href={createPageHref(Math.max(1, currentPage - 1), searchParams)}
         aria-disabled={currentPage === 1}
-        className={`px-3 py-2 rounded-lg border ${
+        className={`px-3 py-2 rounded-lg border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
           currentPage === 1
             ? 'border-gray-200 text-gray-400 pointer-events-none'
             : 'border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -44,11 +47,15 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
       </Link>
 
       {/* Page Numbers */}
-      <div className="flex items-center gap-1">
+      <div className="flex flex-wrap items-center justify-center gap-1">
         {pages.map((page, index) => {
           if (page === -1) {
             return (
-              <span key={`ellipsis-${index}`} className="px-2 py-2 text-gray-500">
+              <span
+                key={`ellipsis-${index}`}
+                className="px-2 py-2 text-gray-500"
+                aria-hidden="true"
+              >
                 …
               </span>
             );
@@ -59,7 +66,8 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
               key={page}
               href={createPageHref(page, searchParams)}
               aria-current={page === currentPage ? 'page' : undefined}
-              className={`w-10 h-10 rounded-lg border transition-colors ${
+              aria-label={`Go to page ${page}`}
+              className={`h-10 w-10 rounded-lg border transition-colors focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
                 page === currentPage
                   ? 'bg-blue-600 text-white border-blue-600'
                   : 'border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -75,7 +83,7 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
       <Link
         href={createPageHref(Math.min(totalPages, currentPage + 1), searchParams)}
         aria-disabled={currentPage === totalPages}
-        className={`px-3 py-2 rounded-lg border ${
+        className={`px-3 py-2 rounded-lg border focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-blue-500 ${
           currentPage === totalPages
             ? 'border-gray-200 text-gray-400 pointer-events-none'
             : 'border-gray-300 text-gray-700 hover:bg-gray-50'
@@ -83,6 +91,6 @@ export function Pagination({ currentPage, totalPages, searchParams }: Pagination
       >
         Next →
       </Link>
-    </div>
+    </nav>
   );
 }

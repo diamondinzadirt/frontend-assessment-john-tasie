@@ -1,6 +1,4 @@
-'use client';
-
-import { STOCK_STATUS, STOCK_THRESHOLDS } from '@/lib/constants';
+import { STOCK_THRESHOLDS } from '@/lib/constants';
 
 interface StockBadgeProps {
   quantity: number;
