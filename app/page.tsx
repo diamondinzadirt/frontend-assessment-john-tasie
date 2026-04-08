@@ -1,6 +1,6 @@
 import { Suspense } from 'react';
 import { Search } from '@/features/search-filter/search';
-import { Filters } from '@/features/search-filter/filters';
+import { ListingFilters } from '@/features/search-filter/listing-filters';
 import {
   FiltersSkeleton,
   ProductListingSkeleton,
@@ -11,7 +11,6 @@ import {
   normalizeListingSearchParams,
   type RawSearchParams,
 } from '@/features/products/listing/search-params';
-import { getProductCategories } from '@/lib/products';
 
 interface PageProps {
   searchParams: Promise<RawSearchParams>;
@@ -19,14 +18,6 @@ interface PageProps {
 
 export default async function Page({ searchParams }: PageProps) {
   const rawSearchParams = await searchParams;
-  let categoryLoadError = false;
-  let categories: Awaited<ReturnType<typeof getProductCategories>> = [];
-
-  try {
-    categories = await getProductCategories();
-  } catch {
-    categoryLoadError = true;
-  }
 
   const { productParams, urlParams } =
     normalizeListingSearchParams(rawSearchParams);
@@ -54,11 +45,7 @@ export default async function Page({ searchParams }: PageProps) {
 
         <div className="mb-6 lg:hidden">
           <Suspense fallback={<FiltersSkeleton variant="compact" />}>
-            <Filters
-              categories={categories}
-              categoryLoadError={categoryLoadError}
-              variant="compact"
-            />
+            <ListingFilters variant="compact" />
           </Suspense>
         </div>
 
@@ -70,10 +57,7 @@ export default async function Page({ searchParams }: PageProps) {
           >
             <div className="sticky top-8">
               <Suspense fallback={<FiltersSkeleton />}>
-                <Filters
-                  categories={categories}
-                  categoryLoadError={categoryLoadError}
-                />
+                <ListingFilters />
               </Suspense>
             </div>
           </aside>
