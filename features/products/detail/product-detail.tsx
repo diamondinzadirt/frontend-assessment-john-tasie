@@ -1,4 +1,5 @@
 import Link from 'next/link';
+import { Suspense } from 'react';
 import { Breadcrumb } from '@/components/breadcrumb';
 import { ErrorState } from '@/components/error-state';
 import { ProductCard } from '@/components/product-card';
@@ -13,7 +14,7 @@ function getCategoryHref(category: string): string {
   return `/?${params.toString()}`;
 }
 
-export async function ProductDetail({ product }: { product: Product }) {
+async function RelatedProducts({ product }: { product: Product }) {
   let relatedProducts: Product[] = [];
   let relatedProductsError = false;
 
@@ -23,6 +24,57 @@ export async function ProductDetail({ product }: { product: Product }) {
     relatedProductsError = true;
   }
 
+  if (relatedProductsError) {
+    return (
+      <ErrorState
+        title="Related products could not be loaded"
+        message="The main product is available, but related products are temporarily unavailable."
+        actionHref="/"
+        actionLabel="Browse all products"
+      />
+    );
+  }
+
+  if (relatedProducts.length === 0) return null;
+
+  return (
+    <div>
+      <h2 className="text-2xl font-bold text-gray-900 mb-6">
+        Related Products
+      </h2>
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        {relatedProducts.map((relatedProduct) => (
+          <ProductCard key={relatedProduct.id} product={relatedProduct} />
+        ))}
+      </div>
+    </div>
+  );
+}
+
+function RelatedProductsFallback() {
+  return (
+    <section aria-label="Loading related products">
+      <div className="h-8 w-48 rounded bg-gray-200 animate-pulse mb-6" />
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
+        {Array.from({ length: 4 }).map((_, index) => (
+          <div
+            key={index}
+            className="bg-white rounded-xl border border-gray-200 overflow-hidden"
+          >
+            <div className="aspect-square bg-gray-200 animate-pulse" />
+            <div className="p-4 space-y-3">
+              <div className="h-4 bg-gray-200 rounded animate-pulse" />
+              <div className="h-4 w-2/3 bg-gray-200 rounded animate-pulse" />
+              <div className="h-6 w-1/2 bg-gray-200 rounded animate-pulse" />
+            </div>
+          </div>
+        ))}
+      </div>
+    </section>
+  );
+}
+
+export function ProductDetail({ product }: { product: Product }) {
   return (
     <div>
       {/* Breadcrumb */}
@@ -131,27 +183,9 @@ export async function ProductDetail({ product }: { product: Product }) {
       </div>
 
       {/* Related Products */}
-      {relatedProductsError && (
-        <ErrorState
-          title="Related products could not be loaded"
-          message="The main product is available, but related products are temporarily unavailable."
-          actionHref="/"
-          actionLabel="Browse all products"
-        />
-      )}
-
-      {!relatedProductsError && relatedProducts.length > 0 && (
-        <div>
-          <h2 className="text-2xl font-bold text-gray-900 mb-6">
-            Related Products
-          </h2>
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4 md:gap-6">
-            {relatedProducts.map((relatedProduct) => (
-              <ProductCard key={relatedProduct.id} product={relatedProduct} />
-            ))}
-          </div>
-        </div>
-      )}
+      <Suspense fallback={<RelatedProductsFallback />}>
+        <RelatedProducts product={product} />
+      </Suspense>
     </div>
   );
 }

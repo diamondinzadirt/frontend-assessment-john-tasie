@@ -64,6 +64,7 @@ Detail page:
 - Breadcrumb navigation back to the listing/category context.
 - Dynamic metadata for title, description, and Open Graph image.
 - Related products from the same category.
+- Related products are streamed behind a React `Suspense` boundary so the main product detail can render independently.
 
 States:
 
@@ -81,6 +82,9 @@ Testing:
 
 - `components/stock-badge.test.tsx` covers stock state messaging.
 - `components/rating-display.test.tsx` covers rating and review-count rendering.
+- `lib/products.test.ts` covers API-boundary behavior, typed API errors, invalid response shapes, missing products, sorting, and the category+search workaround.
+- `features/products/listing/search-params.test.ts` covers URL search-param normalization.
+- `features/products/listing/pagination-utils.test.ts` covers pagination window behavior.
 
 ## Architecture
 
@@ -127,6 +131,7 @@ Architecture decisions:
 - `components/` contains reusable presentational UI.
 - `features/` groups route-specific product listing, product detail, and search/filter behavior.
 - `lib/products.ts` is the API layer. Components do not call `fetch` directly.
+- `lib/products.ts` validates API response shapes and throws a typed `ProductApiError` when network, status, JSON, or schema issues occur.
 - `types/` contains reusable TypeScript shapes for API data.
 
 ## Performance Decisions
@@ -138,7 +143,13 @@ Architecture decisions:
 - Category-list requests use `revalidate: 3600`.
 - Static Next assets are configured with `Cache-Control: public, max-age=31536000, immutable`.
 - Route-specific client code is isolated to search/filter controls.
+- The related-products detail section uses React `Suspense` for streaming server-rendered UI below the primary product content.
 - Production builds run TypeScript validation.
+
+## Bonus Work
+
+- React streaming with `Suspense` is implemented on the product detail page for related products.
+- Accessibility and Lighthouse audit results are still pending until the app is deployed.
 
 ## Trade-offs And Known Limitations
 
@@ -154,6 +165,11 @@ Current checks:
 - `npm run test`
 - `npx tsc --noEmit`
 - `npm run build`
+
+Current automated coverage:
+
+- 5 test files
+- 13 tests
 
 Manual behavior checked:
 
