@@ -11,6 +11,8 @@ Cloudflare Workers deployment:
 ## Setup
 
 ```bash
+git clone <your-repository-url>
+cd frontend-assessment-john-tasie
 npm install
 npm run dev
 ```
@@ -192,11 +194,21 @@ Implemented.
 
 - Related products on the detail page are wrapped in a `Suspense` boundary with a meaningful fallback.
 
+How to verify:
+
+- Open any product detail page, for example `/products/1`
+- The main product content renders independently while related products load with their own fallback state
+
 ### Accessibility audit
 
 Implemented.
 
 - Lighthouse accessibility score: `100`
+
+How to verify:
+
+- Run Lighthouse against the deployed URL
+- Confirm the accessibility score is `>= 95`
 
 ### Cloudflare Workers deployment
 
@@ -222,5 +234,4 @@ Headers to check:
 - That fallback currently fetches up to 100 items from the selected category before local filtering.
 - `x-cache-status` currently signals cache eligibility at the app layer; it is useful for verification, but it is not a substitute for Cloudflare's own `cf-cache-status` response header.
 - I did not add extra state libraries because the app does not need them; URL state plus React built-ins were sufficient.
-
 
